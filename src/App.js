@@ -14,12 +14,11 @@ import {
 } from 'react-navigation-redux-helpers';
 
 // EXPO
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { AppLoading, Asset, Font, Icon, registerRootComponent } from 'expo';
 
 // COMPUDHARMA
 import appReducers from './reducers';
 import AppNavigator from './navigation/AppNavigator';
-
 
 // REDUX NAVIGATION
 // Note: createReactNavigationReduxMiddleware must be run before reduxifyNavigator
@@ -33,15 +32,16 @@ const mapStateToProps = state => ({
 });
 const AppWithNavigationState = connect(mapStateToProps)(ROOT);
 
+
 // REDUX STORE
 const INITIAL_APP_STATE = {};
 const store = createStore(
   appReducers,
   INITIAL_APP_STATE,
-  applyMiddleware(reduxThunk)
+  applyMiddleware(reduxThunk, middleware)
 );
 
-export default class App extends React.Component {
+class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
@@ -101,3 +101,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
+// Moved into App.js due to editing file tree to include src
+Expo.registerRootComponent(App);

@@ -1,4 +1,4 @@
-import axios from '../services/axios';
+import client from '../services/axios';
 import { AsyncStorage } from 'react-native';
 
 import {
@@ -7,7 +7,11 @@ import {
   AUTH_LOGOUT_ERROR,
   AUTH_ERROR,
   AUTH_CHECK_TOKEN,
+  AUTH_TOKEN_ERROR,
+  AUTH_LOADING,
 } from './types';
+
+
 
 export const handleLogin = (formProps, cb) => async dispatch => {
   const { email, password } = formProps;
@@ -17,9 +21,51 @@ export const handleLogin = (formProps, cb) => async dispatch => {
     return dispatch({ type: AUTH_ERROR, payload: 'Email and password required.' });
   }
   
+  // start loader
+  dispatch({ type: AUTH_LOADING, payload: true });
+  
   try {
-    const response = await axios.post('/mobilelogin', { email, password });
-    console.log(response.data);
+    const response = await client.put('/api/v1/entrance/login', { emailAddress: email, password });
+    console.log(response)
+    const token = response.data && response.data.token;
+    const message = response.data && response.data.msg;
+    if (token) {
+      dispatch({ type: AUTH_USER, payload: token });
+      await AsyncStorage.setItem('token', token);
+      cb();
+    } else if (message) {
+      dispatch({ type: AUTH_ERROR, payload: message });
+    } else {
+      dispatch({ type: AUTH_ERROR, payload: 'Something went wrong.  Please try again later.' });
+    }
+  } 
+  catch (err) {
+    console.log("ERR", err);
+    dispatch({ type: AUTH_ERROR, payload: 'Something went wrong.  Please try again later.' });
+  }
+}
+
+
+
+
+
+export const handleSignup = (formProps, cb) => async dispatch => {
+  const { email, password, confirmPassword, firstName, lastName } = formProps;
+
+  // simple validation
+  if (!(email && password && firstName && lastName)) {
+    return dispatch({ type: AUTH_ERROR, payload: 'All fields required.' });
+  }
+    
+  if (password !== confirmPassword) {
+    return dispatch({ type: AUTH_ERROR, payload: 'Passwords do not match.' });
+  }
+  
+  // start loader
+  dispatch({ type: AUTH_LOADING, payload: true });
+  
+  try {
+    const response = await client.post('/api/v1/entrance/signup', formProps);
     if (response.data.token) {
       dispatch({ type: AUTH_USER, payload: response.data.token });
       await AsyncStorage.setItem('token', response.data.token);
@@ -29,16 +75,18 @@ export const handleLogin = (formProps, cb) => async dispatch => {
     } else {
       dispatch({ type: AUTH_ERROR, payload: 'Something went wrong.  Please try again later.' });
     }
-  } 
+  }
   catch (err) {
     console.log("ERR", err)
+    console.log("sflkjblishb", err)
     dispatch({ type: AUTH_ERROR, payload: 'Something went wrong.  Please try again later.' });
   }
 }
 
-export const handleLogout = (token, cb) => async dispatch => {
+export const handleLogout = (cb) => async dispatch => {
+  const token = await AsyncStorage.getItem('token');
   try {
-    const response = await axios.post('/mobilelogout', { token });
+    const response = await client.post('/mobilelogout', { token });
     console.log(response.data)
     if (response.data && response.data.success) {
       dispatch({ type: AUTH_LOGOUT, payload: response.data.success });
@@ -46,6 +94,8 @@ export const handleLogout = (token, cb) => async dispatch => {
       cb();
     } else if (response.data.msg) {
       return dispatch({ type: AUTH_LOGOUT_ERROR, payload: 'Something went wrong, please try again later.' });
+    } else {
+      return dispatch({ type: AUTH_LOGOUT_ERROR, payload: 'Something went wrong, please try again later.' });
     }
   } catch(e) {
     console.log(e)
@@ -53,18 +103,17 @@ export const handleLogout = (token, cb) => async dispatch => {
   }
 }
 
-export const checkToken = (token, cb) => async dispatch => {
+export const checkToken = (token, navigateMain, navigateAuth) => async dispatch => {
   try {
-    const response = await axios.post('/check-token', { token });
-    console.log(response.data)
+    const response = await client.post('/check-token', { token });
     if (response.data && response.data.success) {
-      dispatch({ type: AUTH_LOGOUT, payload: response.data.success });
-      cb();
+      dispatch({ type: AUTH_CHECK_TOKEN, payload: response.data.success });
+      navigateMain();
     } else if (response.data.msg) {
-      return dispatch({ type: AUTH_LOGOUT_ERROR, payload: 'Something went wrong, please try again later.' });
+      return dispatch({ type: AUTH_TOKEN_ERROR, payload: 'Something went wrong, please try again later.' });
     }
   } catch(e) {
-    console.log(e)
-    dispatch({ type: AUTH_LOGOUT_ERROR, payload: 'Something went wrong, please try again later.' });
+    dispatch({ type: AUTH_TOKEN_ERROR, payload: 'Something went wrong, please try again later.' });
+    navigateAuth();
   }
 }

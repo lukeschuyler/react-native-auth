@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Button, AsyncStorage } from 'react-native';
+import { View, Text } from 'react-native';
+import Button from '../components/common/Button';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions/auth';
@@ -10,17 +11,19 @@ class SettingsScreen extends React.Component {
   };
 
   logout = async () => {
-    const token = await AsyncStorage.getItem('token');
-    this.props.handleLogout(token, () => {
+    this.props.handleLogout(() => {
       this.props.navigation.navigate('Auth');
     });
   }
 
   render() {
-    return <View style={styles.container}>
-            <Button onPress={this.logout} title='Logout' />
-            <Text>{this.props.message}</Text>
-           </View>
+    return (
+      <View style={styles.container}>
+        <Button styles={buttonStyles} onPress={this.logout}>
+          Logout
+        </Button>
+      </View>
+    );
   }
 }
 
@@ -37,5 +40,22 @@ const styles = {
     'flex': 1,
     'justifyContent': 'flex-end',
     'alignItems': 'center'
+  }
+}
+
+const buttonStyles = {
+  textStyle: {
+    alignSelf: 'center',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    padding: 10
+  },
+  buttonStyle: {
+    backgroundColor: 'red',
+    borderRadius: 10,
+    alignSelf: 'stretch',
+    marginLeft: 5,
+    marginRight: 5
   }
 }

@@ -1,13 +1,24 @@
 import React from 'react';
-import { createSwitchNavigator } from 'react-navigation';
+import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
+
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
-import LoginScreen from '../screens/LoginScreen';
+import LoginScreen from '../screens/Auth/LoginScreen';
+import SignupScreen from '../screens/Auth/SignupScreen';
 import MainTabNavigator from './MainTabNavigator';
 
+const AuthStack = createStackNavigator({
+  Login: LoginScreen,
+  Signup: SignupScreen,
+});
+
+/*
+ * This module is where we DEFINE our different application states
+ * This module then goes through the appReducer as "nav"
+ * It is then imported into App.js to be hooked up to redux
+ */
+
 export default createSwitchNavigator({
-  // You could add another route here for authentication.
-  // Read more at https://reactnavigation.org/docs/en/auth-flow.html
-  Auth: LoginScreen,
+  Auth: AuthStack,
   AuthLoading: AuthLoadingScreen,
   Main: MainTabNavigator,
 },
