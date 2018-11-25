@@ -25,7 +25,7 @@ export const handleLogin = (formProps, cb) => async dispatch => {
   dispatch({ type: AUTH_LOADING, payload: true });
   
   try {
-    const response = await client.put('/api/v1/entrance/login', { emailAddress: email, password });
+    const response = await client.post('/mobile/signin', { email, password });
     console.log(response)
     const token = response.data && response.data.token;
     const message = response.data && response.data.msg;
@@ -65,7 +65,8 @@ export const handleSignup = (formProps, cb) => async dispatch => {
   dispatch({ type: AUTH_LOADING, payload: true });
   
   try {
-    const response = await client.post('/api/v1/entrance/signup', formProps);
+    const response = await client.post('/mobile/signup', formProps);
+    console.log(response.data);
     if (response.data.token) {
       dispatch({ type: AUTH_USER, payload: response.data.token });
       await AsyncStorage.setItem('token', response.data.token);
@@ -86,7 +87,7 @@ export const handleSignup = (formProps, cb) => async dispatch => {
 export const handleLogout = (cb) => async dispatch => {
   const token = await AsyncStorage.getItem('token');
   try {
-    const response = await client.post('/mobilelogout', { token });
+    const response = await client.post('/mobile/logout', { token });
     console.log(response.data)
     if (response.data && response.data.success) {
       dispatch({ type: AUTH_LOGOUT, payload: response.data.success });

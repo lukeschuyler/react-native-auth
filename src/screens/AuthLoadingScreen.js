@@ -10,16 +10,18 @@ class AuthLoadingScreen extends Component {
 
   checkToken = async () => {
     const token = await AsyncStorage.getItem('token');
-    if (!token) {
-      return this.props.navigation.navigate('Auth');
-    }
-    this.props.checkToken(token, () => {
-        this.props.navigation.navigate('Main');
-      },
-      () => {
-        this.props.navigation.navigate('Auth');
-      }
-    );
+    this.props.navigation.navigate(token ? 'Main' : 'Auth');
+
+    // if (!token) {
+    //   return this.props.navigation.navigate('Auth');
+    // }
+    // this.props.checkToken(token, () => {
+    //     this.props.navigation.navigate('Main');
+    //   },
+    //   () => {
+    //     this.props.navigation.navigate('Auth');
+    //   }
+    // );
   } 
 
   componentDidMount() {
