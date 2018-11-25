@@ -23,7 +23,7 @@ class LoginScreen extends React.Component {
 
   render() {
     const { loading } = this.props;
-    const loader = loading ? <ActivityIndicator color='red' style={styles.loading} size='large'/> : null;
+    const loader = loading ? <ActivityIndicator color='black' style={styles.loading} size='large'/> : null;
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <MonoText style={styles.header}>Login Screen</MonoText>
@@ -94,7 +94,7 @@ const styles = {
     width: 350,
     fontSize: 16,
     margin: 10,
-    backgroundColor:'rgba(211,211,211, .3)',
+    backgroundColor:'rgb(211,211,211)',
     paddingLeft: 15,
     paddingRight: 15,
     paddingTop: 5,
@@ -132,7 +132,7 @@ const styles = {
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0, .3)',
+    backgroundColor: 'rgba(255,255,255, .5)',
   },
   loginButtonStyles: {
     textStyle: {

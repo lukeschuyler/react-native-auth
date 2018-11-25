@@ -28,8 +28,8 @@ class SettingsScreen extends React.Component {
 }
 
 // Don't need anything yet, just redirecting on logout
-function mapStateToProps({ message }) {
-  return { message }
+function mapStateToProps({ auth }) {
+  return { message: auth.message }
 }
 
 export default connect(mapStateToProps, actions)(SettingsScreen);
@@ -39,8 +39,9 @@ const styles = {
   container: {
     'flex': 1,
     'justifyContent': 'flex-end',
-    'alignItems': 'center'
-  }
+    'alignItems': 'center',
+    backgroundColor: '#fff',
+  },
 }
 
 const buttonStyles = {

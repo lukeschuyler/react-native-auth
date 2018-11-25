@@ -6,3 +6,7 @@ export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 export const AUTH_LOGOUT_ERROR = 'AUTH_LOGOUT_ERROR';
 export const AUTH_CHECK_TOKEN = 'AUTH_CHECK_TOKEN';
 export const AUTH_TOKEN_ERROR = 'AUTH_TOKEN_ERROR';
+
+// NOTES
+export const GET_ALL_NOTES = 'GET_ALL_NOTES';
+export const GET_USER_NOTES = 'GET_USER_NOTES';
