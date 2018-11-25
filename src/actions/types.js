@@ -10,3 +10,5 @@ export const AUTH_TOKEN_ERROR = 'AUTH_TOKEN_ERROR';
 // NOTES
 export const GET_ALL_NOTES = 'GET_ALL_NOTES';
 export const GET_USER_NOTES = 'GET_USER_NOTES';
+export const NOTES_LOADING = 'NOTES_LOADING';
+export const NOTES_ERROR = 'NOTES_ERROR';
