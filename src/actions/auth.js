@@ -106,14 +106,17 @@ export const handleLogout = (cb) => async dispatch => {
 
 export const checkToken = (token, navigateMain, navigateAuth) => async dispatch => {
   try {
-    const response = await client.post('/check-token', { token });
+    const response = await client.get('/mobile/check-token');
+    const userId = response.data && response.data.userId;
+    console.log("res", response.data)
     if (response.data && response.data.success) {
-      dispatch({ type: AUTH_CHECK_TOKEN, payload: response.data.success });
+      dispatch({ type: AUTH_CHECK_TOKEN, payload: response.data.userId });
       navigateMain();
     } else if (response.data.msg) {
       return dispatch({ type: AUTH_TOKEN_ERROR, payload: 'Something went wrong, please try again later.' });
     }
   } catch(e) {
+    console.log("err", e)
     dispatch({ type: AUTH_TOKEN_ERROR, payload: 'Something went wrong, please try again later.' });
     navigateAuth();
   }

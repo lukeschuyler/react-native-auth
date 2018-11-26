@@ -25,7 +25,7 @@ export default function(state = {}, action) {
       return { ...state, message: action.payload }
       break;    
     case AUTH_CHECK_TOKEN:
-      return { ...state, token: action.payload, message: '' }
+      return { ...state, userId: action.payload, message: '' }
       break;    
     case AUTH_TOKEN_ERROR:
       return { ...state, message: '' }

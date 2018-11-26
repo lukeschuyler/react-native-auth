@@ -8,7 +8,7 @@ import { MonoText } from '../../components/StyledText.js';
 import { TextInput, StyleSheet, View, Text, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 
 import Button from '../../components/common/Button';
-import FormInput from '../../components/common/FormInput';
+import { FormInput } from '../../components/common/FormInput';
 
 class SignupScreen extends React.Component {
   static navigationOptions = {

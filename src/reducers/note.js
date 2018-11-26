@@ -2,6 +2,7 @@ import {
   GET_ALL_NOTES,
   GET_USER_NOTES,
   DELETE_NOTE,
+  ADD_NOTE,
   NOTES_ERROR,
   NOTES_LOADING } from '../actions/types';
 
@@ -19,6 +20,9 @@ export default function(state = {}, action) {
     case GET_USER_NOTES:
       return { ...state, notes: action.payload, loading: false }
       break;       
+    case ADD_NOTE:
+      return { ...state, notes: [action.payload, ...state.notes] } 
+      break;        
     case DELETE_NOTE:
       return { ...state, notes: state.notes.filter(n => n._id !== action.payload) } 
       break;    

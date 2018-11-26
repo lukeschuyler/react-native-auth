@@ -2,74 +2,60 @@ import React from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { compose  } from 'redux';
-import * as actions from '../../actions/auth';
+import * as actions from '../actions/notes';
 
-import { MonoText } from '../../components/StyledText.js';
+import { MonoText } from './StyledText.js';
 import { TextInput, StyleSheet, View, Text, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 
-import Button from '../../components/common/Button';
-import { FormInput } from '../../components/common/FormInput';
+import Button from './common/Button';
+import { FormInput } from './common/FormInput';
 
-class LoginScreen extends React.Component {
+class NoteForm extends React.Component {
   static navigationOptions = {
-    header: null,
+    header: 'Add Note',
   };
     
-  handleLogin = formProps => {
-    this.props.handleLogin(formProps, () => {
-      this.props.navigation.navigate('Main');
+  handleAddNote = formProps => {
+    console.log(this.props)
+    this.props.addNote(formProps, () => {
+      this.props.navigatHome();
     });
   }
 
   render() {
-    const { loading } = this.props;
+    const { loading, message } = this.props;
     const loader = loading ? <ActivityIndicator color='black' style={styles.loading} size='large'/> : null;
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <MonoText style={styles.header}>Login Screen</MonoText>
         <View>
           <Field
             component={FormInput}
-            name='email'
-            keyboardType="email-address" 
-            autoCapitalize="none" 
+            name='content'
+            multiline={true}
+            numberOfLines={5}
             autoCorrect={false} 
             style={styles.inputs} 
-            placeholder="email"  
-            returnKeyType='search'
+            placeholder="Add a note!"  
           />
-          <Field
-            component={FormInput}
-            name='password'
-            autoCapitalize="none" 
-            secureTextEntry={true} 
-            style={styles.inputs} 
-            placeholder="password" 
-          />
-          <Text style={styles.message}>{this.props.message}</Text>
+          <Text style={styles.message}>{message}</Text>
         </View>
-        <Button styles={styles.loginButtonStyles} onPress={this.props.handleSubmit(this.handleLogin)} >
-          Login
+        <Button styles={styles.loginButtonStyles} onPress={this.props.handleSubmit(this.handleAddNote)} >
+          Create
         </Button>        
-        <Button styles={ { textStyle: { color: 'rgb(100,100,100)' } } } onPress={() => this.props.navigation.navigate('Signup')} >
-          Sign up!
-        </Button>
         {loader}
       </KeyboardAvoidingView>
     )
   }
-
 }
 
-function mapStateToProps({ auth }) {
-  return { message: auth.message, loading: auth.loading }
+function mapStateToProps({ note }) {
+  return { message: note.message, loading: note.loading }
 }
 
 export default compose(
   connect(mapStateToProps, actions),
-  reduxForm({ form: 'signin' })
-)(LoginScreen);
-
+  reduxForm({ form: 'newNote' })
+)(NoteForm);
 
 const buttonStyles = {
   textStyle: {
@@ -90,10 +76,10 @@ const buttonStyles = {
 
 const styles = {
   inputs: {
-    height: 45,
+    height: 150,
     width: 350,
     fontSize: 16,
-    margin: 10,
+    // margin: 10,
     backgroundColor:'rgb(211,211,211)',
     paddingLeft: 15,
     paddingRight: 15,
@@ -105,7 +91,6 @@ const styles = {
   },
   container: {
     flex: 1,
-    backgroundColor: 'goldenrod',
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput } from 'react-native';
 
-export default props => {
+export const FormInput = props => {
   const { input, ...inputProps } = props;
   return <TextInput 
             { ...inputProps }
