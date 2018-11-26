@@ -28,9 +28,10 @@ export const handleLogin = (formProps, cb) => async dispatch => {
     const response = await client.post('/mobile/signin', { email, password });
     console.log(response)
     const token = response.data && response.data.token;
+    const userId = response.data && response.data.id;
     const message = response.data && response.data.msg;
     if (token) {
-      dispatch({ type: AUTH_USER, payload: token });
+      dispatch({ type: AUTH_USER, payload: { token, userId } });
       await AsyncStorage.setItem('token', token);
       cb();
     } else if (message) {

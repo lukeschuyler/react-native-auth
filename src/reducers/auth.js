@@ -13,7 +13,7 @@ export default function(state = {}, action) {
       return { ...state, loading: true }
       break;    
     case AUTH_USER:
-      return { ...state, token: action.payload, message: '', loading: false }
+      return { ...state, token: action.payload.token, message: '', loading: false, userId: action.payload.userId }
       break;
     case AUTH_ERROR:
       return { ...state, message: action.payload, loading: false }

@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingTop: 30
   },
   contentContainer: {
     paddingTop: 30,
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   tabBarInfoContainer: {
-    position: 'absolute',
+    // position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
