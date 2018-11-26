@@ -20,7 +20,7 @@ export default function(state = {}, action) {
       return { ...state, notes: action.payload, loading: false }
       break;       
     case DELETE_NOTE:
-      return { ...state, notes: action.payload, loading: false }
+      return { ...state, notes: state.notes.filter(n => n._id !== action.payload) } 
       break;    
     default: 
       return { ...state };

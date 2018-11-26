@@ -26,7 +26,6 @@ export const handleLogin = (formProps, cb) => async dispatch => {
   
   try {
     const response = await client.post('/mobile/signin', { email, password });
-    console.log(response)
     const token = response.data && response.data.token;
     const userId = response.data && response.data.id;
     const message = response.data && response.data.msg;
